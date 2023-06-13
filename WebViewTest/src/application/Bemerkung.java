@@ -11,6 +11,7 @@ public class Bemerkung {
 	public Bemerkung(String Datum, String Bemerkung) {
 		this.datum = new SimpleStringProperty(Datum); 
 		this.bemerkung = new SimpleStringProperty(Bemerkung);
+		System.out.println("OK");
 	}
 	
 	public StringProperty datumProperty() {

@@ -3,6 +3,9 @@ package application;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -84,7 +87,9 @@ public class Main extends Application {
 		Button btn = new Button("OK"); 
 		
 		btn.setOnAction(e-> {
-			asdfasdf
+			if(birthDate.getValue() != null && t.getText() != null) {
+				String a = birthDate.toString();
+				new Bemerkung(a, t.getText()); 
 			}
 		});
 		
