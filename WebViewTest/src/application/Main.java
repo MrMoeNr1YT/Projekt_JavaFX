@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -59,15 +60,27 @@ public class Main extends Application {
 		// Set the day cell factory
 		birthDate.setDayCellFactory(dayCellFactory);
 	
+		Label l = new Label("Text eingeben"); 
+		TextField t = new TextField(); 
+		
+		
+		
 		HBox root = new HBox(new Label("Birth Date:"), birthDate); 
 		root.setStyle("-fx-padding: 10;" + 
 		              "-fx-border-style: solid inside;" + 
-		              "-fx-border-width: 2;" +
+		              "-fx-border-width: 5;" +
 		              "-fx-border-insets: 5;" + 
 		             "-fx-border-radius: 5;" + 
 		             "-fx-border-color: blue;");
-
+		
+		HBox h = new HBox(100);
+		h.getChildren().add(l); 
+		h.getChildren().add(t); 
+		
+		root.getChildren().add(h); 
+		
 		Scene scene = new Scene(root);
+		
 		stage.setScene(scene);
 		stage.setTitle("Using DatePicker Control");
 		stage.show();
