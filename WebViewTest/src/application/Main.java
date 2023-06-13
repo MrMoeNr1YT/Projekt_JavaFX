@@ -1,51 +1,76 @@
+
 package application;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.web.WebView;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.converter.LocalDateStringConverter;
 
 public class Main extends Application {
-	private WebView webview;
-	
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
 
 	@Override
 	public void start(Stage stage) {
-		// Must create a WebView object from the JavaFX Application Thread
-		webview = new WebView(); 
-
-		MenuItem yahoo = new MenuItem("Yahoo");
-		yahoo.setOnAction(e -> loadPage("http://www.yahoo.com"));
-
-		MenuItem google = new MenuItem("Google");
-		google.setOnAction(e -> loadPage("http://www.google.com"));
+		DatePicker birthDate = new DatePicker();		
+		birthDate.setEditable(false);
 		
-		MenuItem webuntis = new MenuItem("WebUntis");
-		webuntis.setOnAction(e -> loadPage("https://klio.webuntis.com/WebUntis/?school=hak-reutte#/basic/timetable"));
-	
-		// Add menu items to the MenuButton
-		MenuButton links = new MenuButton("Visit");
-		links.getItems().addAll(yahoo, google,webuntis); 
+		// Print the new date on standard output
+		birthDate.setOnAction(e -> 
+			System.out.println("New Date:" + birthDate.getValue()));
+		
+		String pattern = "MM/dd/yyyy";
+		birthDate.setConverter(new LocalDateStringConverter());
+		birthDate.setPromptText(pattern.toLowerCase());
+		
+		// Create a day cell factory
+		Callback<DatePicker, DateCell> dayCellFactory = 
+		new Callback<DatePicker, DateCell>() {
+			public DateCell call(final DatePicker datePicker) {
+				return new DateCell() {
+					@Override 
+					public void updateItem(LocalDate item, boolean empty) {
+						// Must call super
+						super.updateItem(item, empty);
 
-		BorderPane root = new BorderPane();
-		root.setTop(links);
-		BorderPane.setAlignment(links, Pos.TOP_RIGHT);
-		root.setCenter(webview);
+						// Disable all future date cells
+						if (item.isAfter(LocalDate.now())) {
+							this.setDisable(true);
+						}
+
+						// Show Weekends in blue color
+						DayOfWeek day = DayOfWeek.from(item);
+						if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+							this.setTextFill(Color.BLUE);
+						}
+					}
+				};
+			}};
+		
+		// Set the day cell factory
+		birthDate.setDayCellFactory(dayCellFactory);
+	
+		HBox root = new HBox(new Label("Birth Date:"), birthDate); 
+		root.setStyle("-fx-padding: 10;" + 
+		              "-fx-border-style: solid inside;" + 
+		              "-fx-border-width: 2;" +
+		              "-fx-border-insets: 5;" + 
+		             "-fx-border-radius: 5;" + 
+		             "-fx-border-color: blue;");
 
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
-		stage.setTitle("Using MenuButton Controls");
+		stage.setTitle("Using DatePicker Control");
 		stage.show();
-	}
-	
-	public void loadPage(String url) {
-		webview.getEngine().load(url);
+		stage.sizeToScene();
 	}
 }
