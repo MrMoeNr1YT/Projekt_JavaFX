@@ -11,6 +11,7 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -82,7 +83,10 @@ public class Main extends Application {
 		
 		Button btn = new Button("OK"); 
 		
-		btn.setOnAction(null);
+		btn.setOnAction(e-> {
+			asdfasdf
+			}
+		});
 		
 		
 		HBox b = new HBox(100); 
